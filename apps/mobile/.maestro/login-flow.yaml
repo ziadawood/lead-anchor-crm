@@ -1,0 +1,31 @@
+appId: com.leadanchor.app
+---
+- launchApp:
+    clearState: true
+
+- assertVisible: "Sign in to your account"
+
+# Login Flow
+- tapOn: "Email"
+- inputText: "test@leadanchor.com"
+- tapOn: "Password"
+- inputText: "password123"
+- tapOn: "Sign In"
+
+# Wait for navigation to complete
+- extendedWaitUntil:
+    visible: "Pipeline"
+    timeout: 10000
+
+# Verify Inbox loads
+- tapOn: "Inbox"
+- assertVisible: "Inbox"
+
+# Verify Pipeline loads
+- tapOn: "Pipeline"
+- assertVisible: "New Opportunity"
+- assertVisible: "Quote Sent"
+
+# Verify Contacts loads
+- tapOn: "Contacts"
+- assertVisible: "Search contacts..."
