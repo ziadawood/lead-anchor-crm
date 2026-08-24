@@ -27,7 +27,7 @@ const SignupPage = () => {
       if (!authData.user) throw new Error("Unknown error during signup.");
 
       // 2. Call the API to create the Tenant and Role associations
-      const response = await fetch('http://localhost:8787/api/v1/auth/signup-finalize', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/auth/signup-finalize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

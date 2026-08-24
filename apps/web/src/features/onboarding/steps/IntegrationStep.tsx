@@ -24,7 +24,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, updateDa
     setIsSearching(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:8787/api/v1/onboarding/numbers/search?areaCode=${areaCode}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/onboarding/numbers/search?areaCode=${areaCode}`, {
         headers: { Authorization: `Bearer ${session?.access_token}` }
       });
       const result = await res.json();
@@ -43,7 +43,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, updateDa
     setError(null);
     try {
       // Provision Number
-      const res1 = await fetch('http://localhost:8787/api/v1/onboarding/numbers/provision', {
+      const res1 = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/onboarding/numbers/provision`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const IntegrationStep: React.FC<IntegrationStepProps> = ({ data, updateDa
       if (!res1.ok) throw new Error('Failed to provision number');
 
       // Save Profile
-      const res2 = await fetch('http://localhost:8787/api/v1/onboarding/profile', {
+      const res2 = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/onboarding/profile`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

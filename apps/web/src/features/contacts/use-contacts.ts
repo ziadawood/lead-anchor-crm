@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../auth/use-auth';
 
-const API_URL = 'http://localhost:8787/api/v1';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1');
 
 export const useContacts = () => {
   const { session } = useAuth();

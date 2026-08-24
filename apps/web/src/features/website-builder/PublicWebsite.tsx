@@ -4,7 +4,7 @@ import { CleanLight } from './templates/CleanLight';
 import { ProfessionalDark } from './templates/ProfessionalDark';
 import { Loader2 } from 'lucide-react';
 
-const API_URL = 'http://localhost:8787/api/v1';
+const API_URL = (import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1');
 
 export const PublicWebsite = () => {
   const { slug } = useParams();

@@ -8,7 +8,7 @@ export const CallLogs = () => {
 
   const fetchCalls = async () => {
     // For MVP, we use Supabase client directly to fetch raw logs for the tenant
-    const res = await fetch(`http://localhost:8787/api/v1/contacts`, { // Re-using contacts endpoint to just show the concept, or better, we can query interactions directly
+    const res = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/contacts`, { // Re-using contacts endpoint to just show the concept, or better, we can query interactions directly
       headers: { Authorization: `Bearer ${session?.access_token}` },
     });
     // In a real implementation we would hit a specific /interactions?type=call endpoint.

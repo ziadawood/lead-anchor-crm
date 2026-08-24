@@ -21,7 +21,7 @@ export const useChat = (tenantId: string) => {
     setIsStreaming(true);
 
     try {
-      const response = await fetch('http://localhost:8787/api/v1/chat/stream', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://leadanchor-api.ziadawood.workers.dev/api/v1'}/chat/stream`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
