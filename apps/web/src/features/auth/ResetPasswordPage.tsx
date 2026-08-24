@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
 

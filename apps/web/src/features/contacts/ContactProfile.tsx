@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useContactProfile } from './use-contacts';
 import { ArrowLeft, Phone, Mail, MapPin, Calendar, Clock, MessageSquare } from 'lucide-react';
 

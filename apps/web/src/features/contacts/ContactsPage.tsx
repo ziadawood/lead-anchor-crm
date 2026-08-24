@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useContacts } from './use-contacts';
 import { Search, Filter, Phone, Mail, Loader2, UserPlus } from 'lucide-react';
 
