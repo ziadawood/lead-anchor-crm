@@ -1,31 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { AlertCircle, X, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/use-auth';
 
 export const GhostLeadToast = () => {
   const [ghostLead, setGhostLead] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+  const { session } = useAuth();
 
   useEffect(() => {
+    if (!session?.user?.app_metadata?.tenant_id) return;
+    
     // Listen for new ghost leads via Supabase Realtime on the interactions table
     const channel = supabase
-      .channel('ghost_leads')
+      .channel('ghost-leads')
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'interactions',
-          filter: `type=eq.ghost_lead`
+          filter: `tenant_id=eq.${session.user.app_metadata.tenant_id}`,
         },
-        (payload) => {
-          setGhostLead(payload.new);
-          setIsVisible(true);
-          
-          // Auto-hide after 8 seconds
-          setTimeout(() => setIsVisible(false), 8000);
+        (payload: any) => {
+          if (payload.new.type === 'ghost_lead') {
+            setGhostLead(payload.new);
+            setIsVisible(true);
+            setTimeout(() => setIsVisible(false), 10000);
+          }
         }
       )
       .subscribe();
