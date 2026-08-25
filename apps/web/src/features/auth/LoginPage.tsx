@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseUrl } from '../../lib/supabase';
 import { Mail, Lock, AlertCircle, Anchor, ArrowRight } from 'lucide-react';
 
 const LoginPage = () => {
@@ -15,14 +15,23 @@ const LoginPage = () => {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      console.log('[Login] Attempting login for:', email, 'Target Supabase URL:', supabaseUrl);
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      navigate('/pipeline');
+      if (error) {
+        console.error('[Login Error Details]:', error);
+        setError(error.message);
+      } else {
+        console.log('[Login] Successful:', data);
+        navigate('/pipeline');
+      }
+    } catch (err: any) {
+      console.error('[Login Exception]:', err);
+      setError(err?.message || 'Login request failed.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleGoogleLogin = async () => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseUrl } from '../../lib/supabase';
 import { Mail, Lock, Building2, AlertCircle, CheckCircle2, Anchor, ArrowRight } from 'lucide-react';
 
 const SignupPage = () => {
@@ -17,6 +17,7 @@ const SignupPage = () => {
     setError(null);
 
     try {
+      console.log('[Signup] Initiating signup for:', email, 'Target Supabase URL:', supabaseUrl);
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -25,14 +26,24 @@ const SignupPage = () => {
         },
       });
 
-      if (authError) throw authError;
+      console.log('[Signup] Result:', { authData, authError });
+
+      if (authError) {
+        console.error('[Signup Error Details]:', {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name,
+          full: authError
+        });
+        throw authError;
+      }
       if (!authData.user) throw new Error('Unknown error during signup.');
 
-      // The DB trigger (handle_new_user) auto-creates the tenant + user record.
-      // Show confirmation — Supabase will send a verification email.
       setSuccess(true);
     } catch (err: any) {
-      setError(err.message);
+      console.error('[Signup Exception]:', err);
+      const errorMsg = err?.message || err?.error_description || (typeof err === 'string' ? err : JSON.stringify(err));
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
