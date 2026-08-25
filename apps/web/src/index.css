@@ -1,20 +1,448 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-primary: #3B82F6;
   --color-primary-dark: #2563EB;
   --color-secondary: #10B981;
-  --color-dark: #1E293B;
+  --color-dark: #0f172a;
+  --color-dark-card: #1e293b;
+  --color-dark-surface: #162032;
   --color-light: #F8FAFC;
-  
-  --font-sans: "Inter", "Roboto", sans-serif;
+  --color-accent-cyan: #06b6d4;
+  --color-accent-violet: #8b5cf6;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
+
+/* ============================================================================
+   BASE
+   ============================================================================ */
 
 body {
-  @apply bg-slate-50 text-slate-900 font-sans antialiased;
+  @apply bg-dark text-slate-200 font-sans antialiased;
+  overflow-x: hidden;
 }
 
-/* Glassmorphism utility */
+/* ============================================================================
+   AUTH PAGES — Dark gradient background with floating orbs
+   ============================================================================ */
+
+.auth-page {
+  @apply min-h-screen flex items-center justify-center px-4 relative overflow-hidden;
+  background: linear-gradient(135deg, #0f172a 0%, #1a1a3e 50%, #0f172a 100%);
+}
+
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: float 20s ease-in-out infinite;
+}
+
+.auth-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #3b82f6, transparent 70%);
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.auth-orb-2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #06b6d4, transparent 70%);
+  bottom: -80px;
+  left: -80px;
+  animation-delay: -7s;
+}
+
+.auth-orb-3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #8b5cf6, transparent 70%);
+  top: 50%;
+  left: 50%;
+  animation-delay: -14s;
+}
+
+.auth-card {
+  @apply max-w-md w-full p-8 rounded-2xl relative z-10;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 0 1px rgba(148, 163, 184, 0.05);
+}
+
+.auth-input {
+  @apply w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-slate-200 outline-none transition-all;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.auth-input:focus {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.auth-input::placeholder {
+  @apply text-slate-600;
+}
+
+.auth-btn {
+  @apply w-full font-semibold py-2.5 rounded-xl transition-all flex items-center justify-center text-sm;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.auth-btn:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+}
+
+.auth-btn:disabled {
+  @apply opacity-60 cursor-not-allowed;
+  transform: none;
+}
+
+/* ============================================================================
+   DASHBOARD LAYOUT — Sidebar + content area
+   ============================================================================ */
+
+.dashboard-layout {
+  @apply min-h-screen flex;
+  background: linear-gradient(160deg, #0f172a 0%, #162032 40%, #0f172a 100%);
+}
+
+.dashboard-sidebar {
+  @apply w-64 flex-shrink-0 flex flex-col p-4 border-r;
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(148, 163, 184, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.sidebar-link {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+.sidebar-link:hover {
+  @apply text-slate-200;
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.sidebar-link.active {
+  @apply text-white;
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+
+.dashboard-content {
+  @apply flex-1 p-8 overflow-y-auto;
+}
+
+/* ============================================================================
+   GLASSMORPHISM — Premium dark glass cards
+   ============================================================================ */
+
 .glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.glass-light {
+  background: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+}
+
+/* ============================================================================
+   STAT CARDS — Dashboard metric cards
+   ============================================================================ */
+
+.stat-card {
+  @apply rounded-xl p-5 flex items-center gap-4;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.stat-icon {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center;
+}
+
+/* ============================================================================
+   DATA TABLES — Dark themed tables
+   ============================================================================ */
+
+.data-table {
+  @apply w-full text-left border-collapse;
+}
+
+.data-table thead tr {
+  @apply text-xs uppercase tracking-wider;
+  color: rgba(148, 163, 184, 0.6);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.data-table thead th {
+  @apply px-5 py-3 font-semibold;
+}
+
+.data-table tbody tr {
+  @apply transition-colors;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.05);
+}
+
+.data-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.data-table tbody td {
+  @apply px-5 py-3.5;
+}
+
+/* ============================================================================
+   PAGE HEADERS
+   ============================================================================ */
+
+.page-header h2 {
+  @apply text-2xl font-bold text-white;
+}
+
+.page-header p {
+  @apply text-slate-400 text-sm mt-1;
+}
+
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
+
+.btn-primary {
+  @apply font-semibold py-2 px-4 rounded-xl transition-all flex items-center gap-2 text-sm;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  @apply py-2 px-4 rounded-xl text-sm font-medium transition-all flex items-center gap-2;
+  background: rgba(30, 41, 59, 0.5);
+  color: rgba(148, 163, 184, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.btn-secondary:hover {
+  @apply text-white;
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* ============================================================================
+   FORM INPUTS — Dark themed
+   ============================================================================ */
+
+.dark-input {
+  @apply w-full px-4 py-2.5 rounded-xl text-sm text-slate-200 outline-none transition-all;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.dark-input:focus {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.dark-input::placeholder {
+  @apply text-slate-600;
+}
+
+/* ============================================================================
+   BADGES & TAGS
+   ============================================================================ */
+
+.badge {
+  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold;
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.badge-blue {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.badge-red {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.badge-slate {
+  background: rgba(100, 116, 139, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.15);
+}
+
+/* ============================================================================
+   PIPELINE COLUMNS
+   ============================================================================ */
+
+.pipeline-column {
+  @apply flex flex-col flex-shrink-0 w-80 rounded-2xl p-3 max-h-full;
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.06);
+}
+
+.pipeline-column-header {
+  @apply flex items-center justify-between mb-3 px-2;
+}
+
+.pipeline-column-header h3 {
+  @apply font-bold text-sm text-slate-300;
+}
+
+.deal-card {
+  @apply p-4 rounded-xl mb-3 cursor-grab transition-all;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.deal-card:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.deal-card:active {
+  cursor: grabbing;
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -30px) scale(1.05); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(15px, 10px) scale(1.02); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* ============================================================================
+   SCROLLBAR — Minimal dark style
+   ============================================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.25);
+}
+
+/* ============================================================================
+   TOAST / NOTIFICATION — Ghost Lead
+   ============================================================================ */
+
+.ghost-toast {
+  @apply p-4 rounded-xl relative flex gap-3 cursor-pointer transition-all;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+              0 0 0 1px rgba(239, 68, 68, 0.1),
+              inset 0 0 60px rgba(239, 68, 68, 0.02);
+}
+
+.ghost-toast:hover {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+/* ============================================================================
+   CHAT WIDGET
+   ============================================================================ */
+
+.chat-bubble-user {
+  @apply max-w-[80%] rounded-2xl rounded-tr-sm px-4 py-2 text-sm;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.chat-bubble-ai {
+  @apply max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-2 text-sm;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  color: #e2e8f0;
 }

@@ -14,7 +14,7 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { PipelineColumn } from './PipelineColumn';
 import { DealCard } from './DealCard';
 import { usePipeline } from './use-pipeline';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 
 export const PipelineBoard = () => {
   const { deals, isLoading, updateStage } = usePipeline();
@@ -25,8 +25,6 @@ export const PipelineBoard = () => {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  // Group deals by stage. In a real app, stages come from API. Here we deduce them or hardcode MVP stages.
-  // We'll mock the default stages if the database isn't fully seeded yet.
   const stages = useMemo(() => {
     const defaultStages = [
       { id: 'stage-1', name: 'New Opportunity', position: 1 },
@@ -35,7 +33,6 @@ export const PipelineBoard = () => {
       { id: 'stage-4', name: 'Completed', position: 4 }
     ];
 
-    // If deals have real stages, merge them, otherwise use defaults
     const dbStages = new Map();
     deals.forEach((d: any) => {
       if (d.stage && !dbStages.has(d.stage.id)) {
@@ -82,21 +79,22 @@ export const PipelineBoard = () => {
 
   if (isLoading) {
     return (
-      <div className="h-[calc(100vh-8rem)] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      <div className="h-[calc(100vh-4rem)] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="h-[calc(100vh-8rem)]">
-      <div className="mb-6 flex justify-between items-end">
+    <div className="h-[calc(100vh-4rem)] animate-fade-in-up">
+      <div className="mb-6 flex justify-between items-end page-header">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">Pipeline</h2>
-          <p className="text-slate-500">Manage your deals and active jobs.</p>
+          <h2>Pipeline</h2>
+          <p>Manage your deals and active jobs.</p>
         </div>
-        <button className="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors">
-          + New Deal
+        <button className="btn-primary">
+          <Plus className="w-4 h-4" />
+          New Deal
         </button>
       </div>
 
@@ -106,7 +104,7 @@ export const PipelineBoard = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <div className="flex gap-6 h-[calc(100%-5rem)] overflow-x-auto pb-4">
+        <div className="flex gap-4 h-[calc(100%-5rem)] overflow-x-auto pb-4">
           {columns.map(col => (
             <PipelineColumn key={col.id} stage={col} deals={col.deals} />
           ))}

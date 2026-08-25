@@ -13,7 +13,6 @@ export const GhostLeadToast = () => {
   useEffect(() => {
     if (!session?.user?.app_metadata?.tenant_id) return;
     
-    // Listen for new ghost leads via Supabase Realtime on the interactions table
     const channel = supabase
       .channel('ghost-leads')
       .on(
@@ -42,8 +41,8 @@ export const GhostLeadToast = () => {
   if (!isVisible || !ghostLead) return null;
 
   return (
-    <div className="fixed top-6 right-6 z-50 animate-in slide-in-from-top-4 fade-in duration-300">
-      <div className="bg-white border-l-4 border-red-500 rounded-lg shadow-2xl p-4 w-80 relative flex gap-3 cursor-pointer group hover:bg-slate-50 transition-colors"
+    <div className="fixed top-6 right-6 z-50 animate-fade-in-up">
+      <div className="ghost-toast w-80"
            onClick={() => {
              setIsVisible(false);
              if (ghostLead.contact_id) navigate(`/contacts/${ghostLead.contact_id}`);
@@ -51,23 +50,23 @@ export const GhostLeadToast = () => {
         
         <button 
           onClick={(e) => { e.stopPropagation(); setIsVisible(false); }}
-          className="absolute top-2 right-2 text-slate-400 hover:text-slate-600"
+          className="absolute top-2 right-2 text-slate-500 hover:text-slate-300 transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
 
         <div className="mt-1">
-          <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-            <AlertCircle className="w-5 h-5 text-red-600" />
+          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.15)' }}>
+            <AlertCircle className="w-4 h-4 text-red-400" />
           </div>
         </div>
 
         <div className="flex-1">
-          <h4 className="font-bold text-slate-900 text-sm">Ghost Lead Captured!</h4>
-          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">
+          <h4 className="font-bold text-white text-sm">Ghost Lead Captured!</h4>
+          <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">
             {ghostLead.metadata?.summary || 'An abandoned call was automatically captured.'}
           </p>
-          <div className="mt-2 flex items-center text-xs font-semibold text-red-600 group-hover:text-red-700 transition-colors">
+          <div className="mt-2 flex items-center text-xs font-semibold text-red-400 hover:text-red-300 transition-colors">
             View Profile <ChevronRight className="w-3 h-3 ml-0.5" />
           </div>
         </div>
